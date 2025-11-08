@@ -1,43 +1,73 @@
-# duer
+# React + TypeScript + Vite
 
-Use Cases: USERS CAN ACT AS BUYERS OR SELLERS
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-### Buyer(Company)
- pays to get coins to create a contest for a project he wants to be done and put "coins" as a reward for the best submission 
+Currently, two official plugins are available:
 
-### Seller  
- creates submissions to win contests
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-After winning a contest, seller can use coins to 
-- get services from other sellers
-- retrive coins -> tokens (taxation)
-- bet on objects (no taxation)
+## React Compiler
 
-## Coin
-- Coins are the in-app currency that users can use to create contests, buy services or bet on objects.
-- Users can buy coins using tokens or by winning contests from other users.
-- Coins can be converted back to tokens.
-- Coin system prevent taxation when used inside the app.
-- Token and objects transactions outside the app are taxed.
-- The benefit is to offer services and products while avoiding taxation so a user can bet the gross profit and not net profit and scale inside the app maximazing betting opportunities.
-- The user is not limited by salary or income but by his skills and creativity to win contests and get coins to use inside the app.
-- Gig economy already exists like fiverr but it has its own service fees and taxation when money is withdrawn and waiting times to get paid.
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## BETTING SYSTEM
- Users can bet on objects using coins they have in their account.
- A third party put the object for betting, stakes 1/5 of its value in tokens as a guarantee for the bet and generate a smart contract, set the amount of coins needed to partecipate and max number of partecipants.
- After the bet is closed, the system will randomly select a winner through a smart contract. 
- The third party has a window of time to deliver the object to the winner, if it fails to do so, the staked amount will be distributed among the partecipants.
+## Expanding the ESLint configuration
 
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-#### EXTRA FEATURES
-- MARKETPLACE: Users can put services or objects using coins as currency or sell objects won from bets.
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
 
-- admin and moderation system based on stake system (users partecipate in moderation by staking their tokens and receiving commissions from completion of projects with penalization bad moderation) 
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
 
-- The winner can retrieve the prize or sell it in the market to get the coins.
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-- If a manager is reported user can stake and open an investigation and 7 managers will be randomly selected among those who staked tokens to moderate projects. If the report is valid, the reported manager will loose part of his stake to the system and part of this will be distributed among the 7 managers as reward for their work. If the report is invalid the system rewards the managers, if the reporter did it with bad intention, he will loose part of his stake that will be distributed among the 7 managers as reward for their work.
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-- It's not about what is morally correct or wrong, morality changes from country to country, from culture to culture. We are building a objecetive system with an arbitrary management of resources to maximize betting opportunities and profits.
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
